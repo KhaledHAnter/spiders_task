@@ -5,10 +5,21 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.redAccent,
       body: SafeArea(
-        child: Center(
-          child: Text("Home View"),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: const Row(children: [
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Spacer(),
+                Text("data"),
+              ],
+            )),
+          ]),
         ),
       ),
     );
