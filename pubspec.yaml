@@ -8,18 +8,36 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
+  cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
-
-
-  cupertino_icons: ^1.0.8
+  # State Management
+  flutter_bloc: ^8.1.6
+  # Code generator (mainly used with cubit & retrofit)
+  freezed: ^2.5.2
+  freezed_annotation: ^2.4.4
+  # Dependency injection
+  get_it: ^7.7.0
+  # Automatically generate code for converting to and from JSON by annotating Dart classes
+  json_serializable: ^6.8.0
+  # Annotations for the json_serializable code-generator
+  json_annotation: ^4.9.0
+  # For using svg images  
+  flutter_svg: ^2.0.17
+  # For using spacing
+  gap: ^3.0.1
+  # Networking
+  dio: ^5.6.0
+  pretty_dio_logger: ^1.4.0
+  retrofit: ^4.2.0
+  retrofit_generator: ^8.2.0
+  # For Loading Animations
+  loading_animation_widget: ^1.2.1
 
 dev_dependencies:
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-
-  flutter_lints: ^4.0.0
-
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -28,13 +46,10 @@ flutter:
 
   assets:
     - assets/images/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -58,4 +73,4 @@ flutter_assets:
   assets_path: assets/images
   output_path: lib/core/helpers
   filename: assets.dart
-  field_prefix:
+  field_prefix: null
