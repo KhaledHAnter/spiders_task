@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:spiders_task/features/home/ui/widgets/action_buttons_column.dart';
+import 'package:spiders_task/features/home/ui/widgets/music_info_row.dart';
+import 'package:spiders_task/features/home/ui/widgets/reel_info_text.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -9,17 +13,21 @@ class HomeView extends StatelessWidget {
       backgroundColor: Colors.redAccent,
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: const Row(children: [
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Spacer(),
-                Text("data"),
-              ],
-            )),
-          ]),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: const Column(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    ReelInfoText(),
+                    ActionButtonsColumn(),
+                  ],
+                ),
+              ),
+              Gap(8),
+              MusicInfoRow(),
+            ],
+          ),
         ),
       ),
     );
