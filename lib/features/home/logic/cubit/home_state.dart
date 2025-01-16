@@ -4,7 +4,9 @@ part of 'home_cubit.dart';
 class HomeState with _$HomeState {
   const factory HomeState.initial() = _Initial;
   const factory HomeState.reelsLoading() = ReelsLoading;
-  const factory HomeState.reelsSuccess(List<ReelModel> reels) = ReelsSuccess;
+  const factory HomeState.reelsSuccess(
+          List<ReelModel> reels, List<VideoPlayerController> videoControllers) =
+      ReelsSuccess;
   const factory HomeState.reelsFailure(ApiErrorModel apiErrorModel) =
       ReelsFailure;
 }

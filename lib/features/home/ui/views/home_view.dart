@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:spiders_task/features/home/logic/cubit/home_cubit.dart';
 import 'package:spiders_task/features/home/ui/widgets/action_buttons_column.dart';
 import 'package:spiders_task/features/home/ui/widgets/music_info_row.dart';
 import 'package:spiders_task/features/home/ui/widgets/reel_info_text.dart';
@@ -13,7 +17,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late PageController _pageController;
+  // late PageController _pageController;
   late List<VideoPlayerController> _controllers;
   late List<bool> _isPaused; // لتتبع حالة الـ Pause لكل فيديو
 
@@ -26,7 +30,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    // _pageController = PageController();
     _controllers = videoUrls
         .map((url) =>
             VideoPlayerController.networkUrl(Uri.parse(url))..initialize())
@@ -49,10 +53,11 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<HomeCubit>();
     return Scaffold(
       backgroundColor: Colors.black,
       body: PageView.builder(
-        controller: _pageController,
+        controller: cubit.pageController,
         scrollDirection: Axis.vertical,
         itemCount: videoUrls.length,
         itemBuilder: (context, index) {
@@ -109,6 +114,22 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
               ),
+              BlocListener<HomeCubit, HomeState>(
+                listenWhen: (previous, current) =>
+                    current is ReelsLoading ||
+                    current is ReelsSuccess ||
+                    current is ReelsFailure,
+                listener: (context, state) {
+                  state.whenOrNull(
+                    reelsLoading: () => log("Loading"),
+                    reelsSuccess: (reels, videoControllers) =>
+                        log("Success: $reels"),
+                    reelsFailure: (apiErrorModel) =>
+                        log("Failure : ${apiErrorModel.message}"),
+                  );
+                },
+                child: const SizedBox.shrink(),
+              )
             ],
           );
         },
