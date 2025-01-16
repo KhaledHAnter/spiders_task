@@ -35,6 +35,8 @@ dependencies:
   loading_animation_widget: ^1.2.1
   # For reading more about thing
   readmore: ^3.0.0
+  # For playing videos
+  video_player: ^2.9.2
 
 dev_dependencies:
   flutter_lints: ^4.0.0

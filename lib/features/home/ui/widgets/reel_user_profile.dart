@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:spiders_task/core/helpers/assets.dart';
 import 'package:spiders_task/core/theming/styles.dart';
 
 class ReelUserProfile extends StatelessWidget {
@@ -18,6 +18,7 @@ class ReelUserProfile extends StatelessWidget {
         const CircleAvatar(
           backgroundColor: Colors.white,
           radius: 20,
+          backgroundImage: AssetImage(Assets.images2),
         ),
         const Gap(12),
         Text(

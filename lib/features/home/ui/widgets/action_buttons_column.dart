@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:spiders_task/core/helpers/assets.dart';
 import 'package:spiders_task/core/theming/styles.dart';
 
@@ -33,6 +34,7 @@ class ActionButtonsColumn extends StatelessWidget {
             ],
           ),
         ),
+        const Gap(16),
         SizedBox(
           child: Column(
             children: [
@@ -47,6 +49,7 @@ class ActionButtonsColumn extends StatelessWidget {
             ],
           ),
         ),
+        const Gap(16),
         IconButton(
           onPressed: () {},
           icon: SvgPicture.asset(Assets.imagesMore),
