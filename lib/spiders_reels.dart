@@ -15,6 +15,7 @@ class SpidersReels extends StatelessWidget {
       theme: ThemeData(
         primaryColor: ColorsManager.mainBlue,
         scaffoldBackgroundColor: Colors.white,
+        fontFamily: "Open Sans",
       ),
       initialRoute: Routes.homeView,
       onGenerateRoute: appRouter.generateRoute,
