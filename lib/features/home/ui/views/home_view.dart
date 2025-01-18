@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -78,12 +79,12 @@ class HomeView extends StatelessWidget {
 
               return const SizedBox.shrink();
             },
-            reelsSuccess: (reels, videoControllers, timestamp) {
+            reelsSuccess: (reels, chewieControllers, timestamp) {
               return PageView.builder(
                 physics: const BouncingScrollPhysics(),
                 controller: cubit.pageController,
                 scrollDirection: Axis.vertical,
-                itemCount: videoControllers.length,
+                itemCount: chewieControllers.length,
                 onPageChanged: (index) {
                   // Reset video when changing pages
                   cubit.resetVideo(index);
@@ -93,11 +94,10 @@ class HomeView extends StatelessWidget {
                   }
                 },
                 itemBuilder: (context, index) {
-                  log(videoControllers.length.toString());
-                  log(index.toString());
-                  if (index == videoControllers.length - 1)
+                  if (index == 0) cubit.startVideo(index);
+                  if (index == chewieControllers.length - 1) {
                     cubit.loadMoreReels();
-                  if (index == 0) cubit.resetVideo(index);
+                  }
                   return Stack(
                     children: [
                       GestureDetector(
@@ -106,9 +106,13 @@ class HomeView extends StatelessWidget {
                         },
                         child: Center(
                           child: AspectRatio(
-                            aspectRatio:
-                                videoControllers[index].value.aspectRatio,
-                            child: VideoPlayer(videoControllers[index]),
+                            aspectRatio: chewieControllers[index]
+                                .videoPlayerController
+                                .value
+                                .aspectRatio,
+                            child: Chewie(
+                              controller: chewieControllers[index],
+                            ),
                           ),
                         ),
                       ),
@@ -142,8 +146,7 @@ class HomeView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(apiErrorModel.message ?? "Oops! Something went wrong",
-                        style: Styles.font12SemiBold),
+                    Text(apiErrorModel.message ?? "Oops! Something went wrong"),
                     TextButton(
                       onPressed: () {
                         cubit.emitReelsStates();

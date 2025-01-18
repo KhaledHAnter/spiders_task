@@ -22,7 +22,7 @@ mixin _$HomeState {
     required TResult Function(bool isApiLoading, bool isVideoLoading)
         reelsLoading,
     required TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)
+            List<ChewieController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) =>
@@ -32,7 +32,7 @@ mixin _$HomeState {
     TResult? Function()? initial,
     TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) =>
@@ -42,7 +42,7 @@ mixin _$HomeState {
     TResult Function()? initial,
     TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
@@ -140,7 +140,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(bool isApiLoading, bool isVideoLoading)
         reelsLoading,
     required TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)
+            List<ChewieController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
@@ -153,7 +153,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
@@ -166,7 +166,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
@@ -303,7 +303,7 @@ class _$ReelsLoadingImpl implements ReelsLoading {
     required TResult Function(bool isApiLoading, bool isVideoLoading)
         reelsLoading,
     required TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)
+            List<ChewieController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
@@ -316,7 +316,7 @@ class _$ReelsLoadingImpl implements ReelsLoading {
     TResult? Function()? initial,
     TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
@@ -329,7 +329,7 @@ class _$ReelsLoadingImpl implements ReelsLoading {
     TResult Function()? initial,
     TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
@@ -401,7 +401,7 @@ abstract class _$$ReelsSuccessImplCopyWith<$Res> {
   @useResult
   $Res call(
       {List<ReelModel> reels,
-      List<VideoPlayerController> videoControllers,
+      List<ChewieController> videoControllers,
       DateTime timestamp});
 }
 
@@ -430,7 +430,7 @@ class __$$ReelsSuccessImplCopyWithImpl<$Res>
       null == videoControllers
           ? _value._videoControllers
           : videoControllers // ignore: cast_nullable_to_non_nullable
-              as List<VideoPlayerController>,
+              as List<ChewieController>,
       null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -443,7 +443,7 @@ class __$$ReelsSuccessImplCopyWithImpl<$Res>
 
 class _$ReelsSuccessImpl implements ReelsSuccess {
   const _$ReelsSuccessImpl(final List<ReelModel> reels,
-      final List<VideoPlayerController> videoControllers, this.timestamp)
+      final List<ChewieController> videoControllers, this.timestamp)
       : _reels = reels,
         _videoControllers = videoControllers;
 
@@ -455,9 +455,9 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
     return EqualUnmodifiableListView(_reels);
   }
 
-  final List<VideoPlayerController> _videoControllers;
+  final List<ChewieController> _videoControllers;
   @override
-  List<VideoPlayerController> get videoControllers {
+  List<ChewieController> get videoControllers {
     if (_videoControllers is EqualUnmodifiableListView)
       return _videoControllers;
     // ignore: implicit_dynamic_type
@@ -506,7 +506,7 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
     required TResult Function(bool isApiLoading, bool isVideoLoading)
         reelsLoading,
     required TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)
+            List<ChewieController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
@@ -519,7 +519,7 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
     TResult? Function()? initial,
     TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
@@ -532,7 +532,7 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
     TResult Function()? initial,
     TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
@@ -584,11 +584,11 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
 abstract class ReelsSuccess implements HomeState {
   const factory ReelsSuccess(
       final List<ReelModel> reels,
-      final List<VideoPlayerController> videoControllers,
+      final List<ChewieController> videoControllers,
       final DateTime timestamp) = _$ReelsSuccessImpl;
 
   List<ReelModel> get reels;
-  List<VideoPlayerController> get videoControllers;
+  List<ChewieController> get videoControllers;
   DateTime get timestamp;
 
   /// Create a copy of HomeState
@@ -671,7 +671,7 @@ class _$ReelsFailureImpl implements ReelsFailure {
     required TResult Function(bool isApiLoading, bool isVideoLoading)
         reelsLoading,
     required TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)
+            List<ChewieController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
@@ -684,7 +684,7 @@ class _$ReelsFailureImpl implements ReelsFailure {
     TResult? Function()? initial,
     TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
@@ -697,7 +697,7 @@ class _$ReelsFailureImpl implements ReelsFailure {
     TResult Function()? initial,
     TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers, DateTime timestamp)?
+            List<ChewieController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),

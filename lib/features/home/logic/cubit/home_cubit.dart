@@ -11,6 +11,7 @@ import 'package:spiders_task/features/home/data/models/reels_model.dart';
 import 'package:spiders_task/features/home/data/repos/home_repo.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:chewie/chewie.dart';
 
 part 'home_state.dart';
 part 'home_cubit.freezed.dart';
@@ -20,24 +21,24 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.repo) : super(const HomeState.initial());
 
   List<ReelModel> reels = [];
-  List<VideoPlayerController> videoControllers = [];
-  List<bool> isPaused = []; // سيضاف هنا عنصر لكل فيديو
+  List<ChewieController> chewieControllers = [];
+  List<bool> isPaused = [];
   final CacheManager _cacheManager = DefaultCacheManager();
   PageController pageController = PageController();
 
-  String? nextPageUrl; // متغير لتخزين رابط الصفحة التالية
-  bool isLoadingMore = false; // متغير للتحقق من عملية تحميل إضافية
+  String? nextPageUrl;
+  bool isLoadingMore = false;
 
   void emitReelsStates() async {
     emit(const HomeState.reelsLoading(
         isApiLoading: true, isVideoLoading: false));
 
     // تمرير الرقم الأول للصفحة
-    final result = await repo.getReels(5); // طلب الصفحة الأولى
+    final result = await repo.getReels(5);
     result.when(success: (data) {
       reels = data.reels ?? [];
       nextPageUrl = data.links?.next;
-      emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
+      emit(HomeState.reelsSuccess(reels, chewieControllers, DateTime.now()));
       _initializeVideoControllers();
     }, error: (error) {
       emit(HomeState.reelsFailure(error));
@@ -48,24 +49,19 @@ class HomeCubit extends Cubit<HomeState> {
     if (isLoadingMore || nextPageUrl == null) return;
 
     isLoadingMore = true;
-    // emit(const HomeState.reelsLoading(
-    //     isApiLoading: false, isVideoLoading: true));
 
-    // استخراج رقم الصفحة من الرابط
     final nextPage = int.parse(nextPageUrl!.split('page=')[1]);
 
     try {
-      final result = await repo.getReels(nextPage); // تمرير الصفحة التالية
+      final result = await repo.getReels(nextPage);
 
       result.when(success: (data) {
         if (data.reels != null) {
-          reels.addAll(data.reels!); // دمج الفيديوهات الجديدة مع القديمة
-          nextPageUrl = data.links?.next; // تحديث رابط الصفحة التالية
-
-          // تهيئة الفيديوهات الجديدة
+          reels.addAll(data.reels!);
+          nextPageUrl = data.links?.next;
           _initializeVideoControllersForNewReels(data.reels!);
-
-          emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
+          emit(
+              HomeState.reelsSuccess(reels, chewieControllers, DateTime.now()));
         }
       }, error: (error) {
         print("Error loading more reels: $error");
@@ -77,9 +73,9 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  // دالة لتحديث videoControllers و isPaused للفيديوهات الجديدة
   Future<void> _initializeVideoControllersForNewReels(
       List<ReelModel> newReels) async {
+        
     for (var reel in newReels) {
       final videoUrl = reel.video ?? '';
       final file = await _getCachedVideo(videoUrl);
@@ -91,32 +87,35 @@ class HomeCubit extends Cubit<HomeState> {
         controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
       }
 
-      // تأكيد تهيئة الـ controller بشكل صحيح
       try {
-        // ننتظر حتى تكتمل عملية التهيئة
         await controller.initialize();
+        ChewieController chewieController = ChewieController(
+          videoPlayerController: controller,
+          autoPlay: false,
+          looping: true,
+          showControls: false,
+        );
 
-        // بعد التهيئة بنجاح، نقوم بإضافة الفيديو الجديد
-        videoControllers.add(controller);
-        isPaused.add(false); // الفيديو يبدأ في وضع الإيقاف المؤقت
+        chewieControllers.add(chewieController);
+        isPaused.add(false);
 
-        // تحديث حالة الـ emit بمجرد إضافة الفيديو الجديد
-        emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
+        emit(HomeState.reelsSuccess(reels, chewieControllers, DateTime.now()));
       } catch (e) {
         log("Error initializing video controller: $e");
       }
     }
   }
 
-  // تهيئة الفيديوهات
   Future<void> _initializeVideoControllers() async {
     for (var reel in reels) {
       final videoUrl = reel.video ?? '';
-      // Emit loading state for video initialization
       if (reels.length <= 10) {
         emit(const HomeState.reelsLoading(
-            isApiLoading: false, isVideoLoading: true));
+          isApiLoading: false,
+          isVideoLoading: true,
+        ));
       }
+
       final file = await _getCachedVideo(videoUrl);
       VideoPlayerController controller;
 
@@ -127,15 +126,20 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
       await controller.initialize();
-      videoControllers.add(controller);
-      isPaused.add(false); // تحديد حالة الإيقاف المؤقت للفيديو
-      controller.setLooping(true);
+      ChewieController chewieController = ChewieController(
+        videoPlayerController: controller,
+        autoPlay: false,
+        looping: true,
+        showControls: false,
+      );
 
-      emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
+      chewieControllers.add(chewieController);
+      isPaused.add(false);
+
+      emit(HomeState.reelsSuccess(reels, chewieControllers, DateTime.now()));
     }
   }
 
-  // إرجاع الفيديو من الذاكرة المؤقتة
   Future<File?> _getCachedVideo(String url) async {
     try {
       final fileInfo = await _cacheManager.getFileFromCache(url);
@@ -146,21 +150,24 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  // Play or pause video
+  void startVideo(int index) async {
+    chewieControllers[index].play();
+    isPaused[index] = false;
+  }
+
   void playVideo(int index) {
     if (isPaused[index]) {
-      videoControllers[index].play();
+      chewieControllers[index].play();
       isPaused[index] = false;
     } else {
-      videoControllers[index].pause();
+      chewieControllers[index].pause();
       isPaused[index] = true;
     }
   }
 
-  // Reset video to the beginning
   void resetVideo(int index) {
-    videoControllers[index].seekTo(Duration.zero);
-    videoControllers[index].play();
+    chewieControllers[index].seekTo(Duration.zero);
+    chewieControllers[index].play();
     isPaused[index] = false;
   }
 }
