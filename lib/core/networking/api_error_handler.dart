@@ -24,8 +24,10 @@ class ApiErrorHandler {
         case DioExceptionType.sendTimeout:
           return ApiErrorModel(
               message: 'Send timeout in connection with server');
+        // case DioExceptionType.badResponse:
+        //   return _handleError(error.response?.data);
         case DioExceptionType.badResponse:
-          return _handleError(error.response?.data);
+          return ApiErrorModel(message: 'bad response');
         default:
           return ApiErrorModel(message: 'Something went wrong');
       }
@@ -35,10 +37,10 @@ class ApiErrorHandler {
   }
 }
 
-ApiErrorModel _handleError(dynamic data) {
-  return ApiErrorModel(
-    message: data['message'] ?? 'Something went wrong',
-    code: data['code'],
-    errors: data['data'],
-  );
-}
+// ApiErrorModel _handleError(dynamic data) {
+//   return ApiErrorModel(
+//     message: data['message'] ?? 'Something went wrong',
+//     code: data['code'],
+//     errors: data['data'],
+//   );
+// }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spiders_task/core/di/dependency_injection.dart';
 import 'package:spiders_task/core/routing/routes.dart';
+import 'package:spiders_task/features/home/logic/cubit/home_cubit.dart';
 import 'package:spiders_task/features/home/ui/views/home_view.dart';
 
 class AppRouter {
@@ -10,7 +13,10 @@ class AppRouter {
     switch (settings.name) {
       case Routes.homeView:
         return MaterialPageRoute(
-          builder: (_) => const HomeView(),
+          builder: (_) => BlocProvider(
+            create: (context) => HomeCubit(getIt())..emitReelsStates(),
+            child: const HomeView(),
+          ),
         );
 
       default:
