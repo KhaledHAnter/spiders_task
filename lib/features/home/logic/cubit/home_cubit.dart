@@ -1,9 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
-
-///
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:spiders_task/core/networking/api_error_model.dart';
@@ -12,7 +9,6 @@ import 'package:spiders_task/features/home/data/repos/home_repo.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:chewie/chewie.dart';
-
 part 'home_state.dart';
 part 'home_cubit.freezed.dart';
 
@@ -33,7 +29,6 @@ class HomeCubit extends Cubit<HomeState> {
     emit(const HomeState.reelsLoading(
         isApiLoading: true, isVideoLoading: false));
 
-    // تمرير الرقم الأول للصفحة
     final result = await repo.getReels(5);
     result.when(success: (data) {
       reels = data.reels ?? [];
@@ -75,7 +70,6 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> _initializeVideoControllersForNewReels(
       List<ReelModel> newReels) async {
-        
     for (var reel in newReels) {
       final videoUrl = reel.video ?? '';
       final file = await _getCachedVideo(videoUrl);
