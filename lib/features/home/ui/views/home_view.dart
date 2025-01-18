@@ -46,12 +46,14 @@ class HomeView extends StatelessWidget {
                 onPageChanged: (index) {
                   // Reset video when changing pages
                   cubit.resetVideo(index);
-                  if (index == reels.length - 3) {
-                    log("pagination");
-                    cubit.loadMoreReels();
-                  }
+                  // if (index == reels.length - 4) {
+                  //   log("pagination");
+                  //   cubit.loadMoreReels();
+                  // }
                 },
                 itemBuilder: (context, index) {
+                  log("index: $index");
+                  log("length: ${chewieControllers.length - 1}");
                   if (index == 0) cubit.startVideo(index);
                   if (index == chewieControllers.length - 1) {
                     cubit.loadMoreReels();
