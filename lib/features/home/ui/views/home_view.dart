@@ -3,14 +3,10 @@ import 'dart:developer';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
-import 'package:spiders_task/core/theming/styles.dart';
 import 'package:spiders_task/features/home/logic/cubit/home_cubit.dart';
-import 'package:spiders_task/features/home/ui/widgets/action_buttons_column.dart';
-import 'package:spiders_task/features/home/ui/widgets/music_info_row.dart';
-import 'package:spiders_task/features/home/ui/widgets/reel_info_text.dart';
-import 'package:video_player/video_player.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:spiders_task/features/home/ui/widgets/flat_layer.dart';
+import 'package:spiders_task/features/home/ui/widgets/main_loader.dart';
+import 'package:spiders_task/features/home/ui/widgets/reel_loader.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -28,53 +24,15 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           return state.maybeWhen(
             orElse: () {
-              return Center(
-                child: LoadingAnimationWidget.waveDots(
-                    color: Colors.white,
-                    size: MediaQuery.sizeOf(context).width / 3),
-              );
+              return const MainLoader();
             },
             reelsLoading: (isApiLoading, isVideoLoading) {
               if (isApiLoading) {
-                return Center(
-                  child: LoadingAnimationWidget.waveDots(
-                      color: Colors.white,
-                      size: MediaQuery.sizeOf(context).width / 3),
-                );
+                return const MainLoader();
               }
 
               if (isVideoLoading) {
-                return Stack(
-                  children: [
-                    const Center(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SafeArea(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        child: const Column(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  ReelInfoText(),
-                                  ActionButtonsColumn(),
-                                ],
-                              ),
-                            ),
-                            Gap(8),
-                            MusicInfoRow(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
+                return const ReelLoader();
               }
 
               return const SizedBox.shrink();
@@ -116,26 +74,7 @@ class HomeView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SafeArea(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          child: const Column(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    ReelInfoText(),
-                                    ActionButtonsColumn(),
-                                  ],
-                                ),
-                              ),
-                              Gap(8),
-                              MusicInfoRow(),
-                            ],
-                          ),
-                        ),
-                      ),
+                      const FlatLayer(),
                     ],
                   );
                 },
