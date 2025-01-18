@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spiders_task/core/theming/styles.dart';
 import 'package:spiders_task/features/home/logic/cubit/home_cubit.dart';
 import 'package:spiders_task/features/home/ui/widgets/flat_layer.dart';
 import 'package:spiders_task/features/home/ui/widgets/main_loader.dart';
@@ -87,7 +88,10 @@ class HomeView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(apiErrorModel.message ?? "Oops! Something went wrong"),
+                    Text(
+                      apiErrorModel.message ?? "Oops! Something went wrong",
+                      style: Styles.font12SemiBold,
+                    ),
                     TextButton(
                       onPressed: () {
                         cubit.emitReelsStates();
