@@ -9,6 +9,7 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio) = _ApiService;
 
-  @GET(ApiConstants.reelsPagesEndpoint)
-  Future<ReelsModel> getReels();
+  // تعديل الـ GET request ليشمل رقم الصفحة
+  @GET('reels')
+  Future<ReelsModel> getReels(@Query('page') int page);
 }

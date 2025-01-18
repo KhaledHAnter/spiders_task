@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -24,31 +25,63 @@ class HomeCubit extends Cubit<HomeState> {
   final CacheManager _cacheManager = DefaultCacheManager();
   PageController pageController = PageController();
 
-  // Fetch data from API and emit success
+  String? nextPageUrl; // متغير لتخزين رابط الصفحة التالية
+  bool isLoadingMore = false; // متغير للتحقق من عملية تحميل إضافية
+
   void emitReelsStates() async {
     emit(const HomeState.reelsLoading(
-        isApiLoading: true, isVideoLoading: false)); // Loading for API
-    final result = await repo.getReels();
-    result.when(success: (data) async {
+        isApiLoading: true, isVideoLoading: false));
+
+    // تمرير الرقم الأول للصفحة
+    final result = await repo.getReels(5); // طلب الصفحة الأولى
+    result.when(success: (data) {
       reels = data.reels ?? [];
-      emit(HomeState.reelsSuccess(reels, videoControllers,
-          DateTime.now())); // Emit success after API data
-      await _initializeVideoControllers(); // Start video initialization
+      nextPageUrl = data.links?.next;
+      emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
+      _initializeVideoControllers();
     }, error: (error) {
       emit(HomeState.reelsFailure(error));
     });
   }
 
-  // Initialize video controllers and cache videos
-  Future<void> _initializeVideoControllers() async {
-    for (var reel in reels) {
+  void loadMoreReels() async {
+    if (isLoadingMore || nextPageUrl == null) return;
+
+    isLoadingMore = true;
+    // emit(const HomeState.reelsLoading(
+    //     isApiLoading: false, isVideoLoading: true));
+
+    // استخراج رقم الصفحة من الرابط
+    final nextPage = int.parse(nextPageUrl!.split('page=')[1]);
+
+    try {
+      final result = await repo.getReels(nextPage); // تمرير الصفحة التالية
+
+      result.when(success: (data) {
+        if (data.reels != null) {
+          reels.addAll(data.reels!); // دمج الفيديوهات الجديدة مع القديمة
+          nextPageUrl = data.links?.next; // تحديث رابط الصفحة التالية
+
+          // تهيئة الفيديوهات الجديدة
+          _initializeVideoControllersForNewReels(data.reels!);
+
+          emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
+        }
+      }, error: (error) {
+        print("Error loading more reels: $error");
+      });
+    } catch (e) {
+      print("Error loading more reels: $e");
+    } finally {
+      isLoadingMore = false;
+    }
+  }
+
+  // دالة لتحديث videoControllers و isPaused للفيديوهات الجديدة
+  Future<void> _initializeVideoControllersForNewReels(
+      List<ReelModel> newReels) async {
+    for (var reel in newReels) {
       final videoUrl = reel.video ?? '';
-
-      // Emit loading state for video initialization
-      emit(const HomeState.reelsLoading(
-          isApiLoading: false, isVideoLoading: true));
-
-      // Start initializing video controller
       final file = await _getCachedVideo(videoUrl);
       VideoPlayerController controller;
 
@@ -58,36 +91,51 @@ class HomeCubit extends Cubit<HomeState> {
         controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
       }
 
-      // Initialize the controller
+      // تأكيد تهيئة الـ controller بشكل صحيح
+      try {
+        // ننتظر حتى تكتمل عملية التهيئة
+        await controller.initialize();
+
+        // بعد التهيئة بنجاح، نقوم بإضافة الفيديو الجديد
+        videoControllers.add(controller);
+        isPaused.add(false); // الفيديو يبدأ في وضع الإيقاف المؤقت
+
+        // تحديث حالة الـ emit بمجرد إضافة الفيديو الجديد
+        emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
+      } catch (e) {
+        log("Error initializing video controller: $e");
+      }
+    }
+  }
+
+  // تهيئة الفيديوهات
+  Future<void> _initializeVideoControllers() async {
+    for (var reel in reels) {
+      final videoUrl = reel.video ?? '';
+      // Emit loading state for video initialization
+      if (reels.length <= 10) {
+        emit(const HomeState.reelsLoading(
+            isApiLoading: false, isVideoLoading: true));
+      }
+      final file = await _getCachedVideo(videoUrl);
+      VideoPlayerController controller;
+
+      if (file != null) {
+        controller = VideoPlayerController.file(file);
+      } else {
+        controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+      }
+
       await controller.initialize();
-
-      // Add the controller to the list
       videoControllers.add(controller);
-
-      // Add corresponding paused state for the video controller
-      isPaused.add(false); // Initially, the video is paused
-
-      // Set looping for video
+      isPaused.add(false); // تحديد حالة الإيقاف المؤقت للفيديو
       controller.setLooping(true);
 
-      // Emit success once the video is initialized
       emit(HomeState.reelsSuccess(reels, videoControllers, DateTime.now()));
-
-      // Cache video after initialization
-      _cacheVideo(videoUrl);
     }
   }
 
-  // Function to cache video
-  Future<void> _cacheVideo(String url) async {
-    try {
-      await _cacheManager.downloadFile(url);
-    } catch (e) {
-      print("Error caching video: $e");
-    }
-  }
-
-  // Get video from cache if available
+  // إرجاع الفيديو من الذاكرة المؤقتة
   Future<File?> _getCachedVideo(String url) async {
     try {
       final fileInfo = await _cacheManager.getFileFromCache(url);
