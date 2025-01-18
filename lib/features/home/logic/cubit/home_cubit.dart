@@ -54,9 +54,9 @@ class HomeCubit extends Cubit<HomeState> {
         if (data.reels != null) {
           reels.addAll(data.reels!);
           nextPageUrl = data.links?.next;
+          // emit(
+          //     HomeState.reelsSuccess(reels, chewieControllers, DateTime.now()));
           _initializeVideoControllersForNewReels(data.reels!);
-          emit(
-              HomeState.reelsSuccess(reels, chewieControllers, DateTime.now()));
         }
       }, error: (error) {
         print("Error loading more reels: $error");
