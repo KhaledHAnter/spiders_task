@@ -37,6 +37,8 @@ dependencies:
   readmore: ^3.0.0
   # For playing videos
   video_player: ^2.9.2
+  # For caching videos
+  flutter_cache_manager: ^3.4.1
 
 dev_dependencies:
   build_runner: ^2.4.13

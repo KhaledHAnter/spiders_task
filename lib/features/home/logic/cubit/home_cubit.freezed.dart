@@ -19,9 +19,10 @@ mixin _$HomeState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() reelsLoading,
-    required TResult Function(
-            List<ReelModel> reels, List<VideoPlayerController> videoControllers)
+    required TResult Function(bool isApiLoading, bool isVideoLoading)
+        reelsLoading,
+    required TResult Function(List<ReelModel> reels,
+            List<VideoPlayerController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) =>
@@ -29,9 +30,9 @@ mixin _$HomeState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? reelsLoading,
+    TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) =>
@@ -39,9 +40,9 @@ mixin _$HomeState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? reelsLoading,
+    TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
@@ -136,9 +137,10 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() reelsLoading,
-    required TResult Function(
-            List<ReelModel> reels, List<VideoPlayerController> videoControllers)
+    required TResult Function(bool isApiLoading, bool isVideoLoading)
+        reelsLoading,
+    required TResult Function(List<ReelModel> reels,
+            List<VideoPlayerController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
@@ -149,9 +151,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? reelsLoading,
+    TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
@@ -162,9 +164,9 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? reelsLoading,
+    TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
@@ -222,6 +224,8 @@ abstract class _$$ReelsLoadingImplCopyWith<$Res> {
   factory _$$ReelsLoadingImplCopyWith(
           _$ReelsLoadingImpl value, $Res Function(_$ReelsLoadingImpl) then) =
       __$$ReelsLoadingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool isApiLoading, bool isVideoLoading});
 }
 
 /// @nodoc
@@ -234,66 +238,104 @@ class __$$ReelsLoadingImplCopyWithImpl<$Res>
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isApiLoading = null,
+    Object? isVideoLoading = null,
+  }) {
+    return _then(_$ReelsLoadingImpl(
+      isApiLoading: null == isApiLoading
+          ? _value.isApiLoading
+          : isApiLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isVideoLoading: null == isVideoLoading
+          ? _value.isVideoLoading
+          : isVideoLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$ReelsLoadingImpl implements ReelsLoading {
-  const _$ReelsLoadingImpl();
+  const _$ReelsLoadingImpl(
+      {required this.isApiLoading, required this.isVideoLoading});
+
+  @override
+  final bool isApiLoading;
+// تحديد ما إذا كنا في انتظار API
+  @override
+  final bool isVideoLoading;
 
   @override
   String toString() {
-    return 'HomeState.reelsLoading()';
+    return 'HomeState.reelsLoading(isApiLoading: $isApiLoading, isVideoLoading: $isVideoLoading)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ReelsLoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$ReelsLoadingImpl &&
+            (identical(other.isApiLoading, isApiLoading) ||
+                other.isApiLoading == isApiLoading) &&
+            (identical(other.isVideoLoading, isVideoLoading) ||
+                other.isVideoLoading == isVideoLoading));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, isApiLoading, isVideoLoading);
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReelsLoadingImplCopyWith<_$ReelsLoadingImpl> get copyWith =>
+      __$$ReelsLoadingImplCopyWithImpl<_$ReelsLoadingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() reelsLoading,
-    required TResult Function(
-            List<ReelModel> reels, List<VideoPlayerController> videoControllers)
+    required TResult Function(bool isApiLoading, bool isVideoLoading)
+        reelsLoading,
+    required TResult Function(List<ReelModel> reels,
+            List<VideoPlayerController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
-    return reelsLoading();
+    return reelsLoading(isApiLoading, isVideoLoading);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? reelsLoading,
+    TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
-    return reelsLoading?.call();
+    return reelsLoading?.call(isApiLoading, isVideoLoading);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? reelsLoading,
+    TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
   }) {
     if (reelsLoading != null) {
-      return reelsLoading();
+      return reelsLoading(isApiLoading, isVideoLoading);
     }
     return orElse();
   }
@@ -337,7 +379,18 @@ class _$ReelsLoadingImpl implements ReelsLoading {
 }
 
 abstract class ReelsLoading implements HomeState {
-  const factory ReelsLoading() = _$ReelsLoadingImpl;
+  const factory ReelsLoading(
+      {required final bool isApiLoading,
+      required final bool isVideoLoading}) = _$ReelsLoadingImpl;
+
+  bool get isApiLoading; // تحديد ما إذا كنا في انتظار API
+  bool get isVideoLoading;
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReelsLoadingImplCopyWith<_$ReelsLoadingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -347,7 +400,9 @@ abstract class _$$ReelsSuccessImplCopyWith<$Res> {
       __$$ReelsSuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {List<ReelModel> reels, List<VideoPlayerController> videoControllers});
+      {List<ReelModel> reels,
+      List<VideoPlayerController> videoControllers,
+      DateTime timestamp});
 }
 
 /// @nodoc
@@ -365,6 +420,7 @@ class __$$ReelsSuccessImplCopyWithImpl<$Res>
   $Res call({
     Object? reels = null,
     Object? videoControllers = null,
+    Object? timestamp = null,
   }) {
     return _then(_$ReelsSuccessImpl(
       null == reels
@@ -375,6 +431,10 @@ class __$$ReelsSuccessImplCopyWithImpl<$Res>
           ? _value._videoControllers
           : videoControllers // ignore: cast_nullable_to_non_nullable
               as List<VideoPlayerController>,
+      null == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -383,7 +443,7 @@ class __$$ReelsSuccessImplCopyWithImpl<$Res>
 
 class _$ReelsSuccessImpl implements ReelsSuccess {
   const _$ReelsSuccessImpl(final List<ReelModel> reels,
-      final List<VideoPlayerController> videoControllers)
+      final List<VideoPlayerController> videoControllers, this.timestamp)
       : _reels = reels,
         _videoControllers = videoControllers;
 
@@ -405,8 +465,11 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
   }
 
   @override
+  final DateTime timestamp;
+
+  @override
   String toString() {
-    return 'HomeState.reelsSuccess(reels: $reels, videoControllers: $videoControllers)';
+    return 'HomeState.reelsSuccess(reels: $reels, videoControllers: $videoControllers, timestamp: $timestamp)';
   }
 
   @override
@@ -416,14 +479,17 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
             other is _$ReelsSuccessImpl &&
             const DeepCollectionEquality().equals(other._reels, _reels) &&
             const DeepCollectionEquality()
-                .equals(other._videoControllers, _videoControllers));
+                .equals(other._videoControllers, _videoControllers) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_reels),
-      const DeepCollectionEquality().hash(_videoControllers));
+      const DeepCollectionEquality().hash(_videoControllers),
+      timestamp);
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -437,41 +503,42 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() reelsLoading,
-    required TResult Function(
-            List<ReelModel> reels, List<VideoPlayerController> videoControllers)
+    required TResult Function(bool isApiLoading, bool isVideoLoading)
+        reelsLoading,
+    required TResult Function(List<ReelModel> reels,
+            List<VideoPlayerController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
-    return reelsSuccess(reels, videoControllers);
+    return reelsSuccess(reels, videoControllers, timestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? reelsLoading,
+    TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
-    return reelsSuccess?.call(reels, videoControllers);
+    return reelsSuccess?.call(reels, videoControllers, timestamp);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? reelsLoading,
+    TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),
   }) {
     if (reelsSuccess != null) {
-      return reelsSuccess(reels, videoControllers);
+      return reelsSuccess(reels, videoControllers, timestamp);
     }
     return orElse();
   }
@@ -515,11 +582,14 @@ class _$ReelsSuccessImpl implements ReelsSuccess {
 }
 
 abstract class ReelsSuccess implements HomeState {
-  const factory ReelsSuccess(final List<ReelModel> reels,
-      final List<VideoPlayerController> videoControllers) = _$ReelsSuccessImpl;
+  const factory ReelsSuccess(
+      final List<ReelModel> reels,
+      final List<VideoPlayerController> videoControllers,
+      final DateTime timestamp) = _$ReelsSuccessImpl;
 
   List<ReelModel> get reels;
   List<VideoPlayerController> get videoControllers;
+  DateTime get timestamp;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -598,9 +668,10 @@ class _$ReelsFailureImpl implements ReelsFailure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() reelsLoading,
-    required TResult Function(
-            List<ReelModel> reels, List<VideoPlayerController> videoControllers)
+    required TResult Function(bool isApiLoading, bool isVideoLoading)
+        reelsLoading,
+    required TResult Function(List<ReelModel> reels,
+            List<VideoPlayerController> videoControllers, DateTime timestamp)
         reelsSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) reelsFailure,
   }) {
@@ -611,9 +682,9 @@ class _$ReelsFailureImpl implements ReelsFailure {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? reelsLoading,
+    TResult? Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult? Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? reelsFailure,
   }) {
@@ -624,9 +695,9 @@ class _$ReelsFailureImpl implements ReelsFailure {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? reelsLoading,
+    TResult Function(bool isApiLoading, bool isVideoLoading)? reelsLoading,
     TResult Function(List<ReelModel> reels,
-            List<VideoPlayerController> videoControllers)?
+            List<VideoPlayerController> videoControllers, DateTime timestamp)?
         reelsSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? reelsFailure,
     required TResult orElse(),

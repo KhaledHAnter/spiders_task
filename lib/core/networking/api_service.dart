@@ -9,6 +9,6 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio) = _ApiService;
 
-  @GET(ApiConstants.reelsEndpoint)
+  @GET(ApiConstants.reelsPagesEndpoint)
   Future<ReelsModel> getReels();
 }
