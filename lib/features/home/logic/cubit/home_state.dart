@@ -13,7 +13,7 @@ class HomeState with _$HomeState {
   // حالة النجاح تشمل reels، videoControllers، و timestamp
   const factory HomeState.reelsSuccess(
     List<ReelModel> reels,
-    List<VideoPlayerController> videoControllers,
+    List<ChewieController> videoControllers,
     DateTime timestamp, // تاريخ ووقت التهيئة
   ) = ReelsSuccess;
 
