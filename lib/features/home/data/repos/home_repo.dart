@@ -8,9 +8,9 @@ class HomeRepo {
 
   HomeRepo(this._apiService);
 
-  Future<ApiResult<ReelsModel>> getReels() async {
+  Future<ApiResult<ReelsModel>> getReels(int page) async {
     try {
-      final response = await _apiService.getReels();
+      final response = await _apiService.getReels(page);
 
       return ApiResult.success(response);
     } catch (error) {

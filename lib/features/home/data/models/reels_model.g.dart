@@ -10,11 +10,14 @@ ReelsModel _$ReelsModelFromJson(Map<String, dynamic> json) => ReelsModel(
       reels: (json['data'] as List<dynamic>?)
           ?.map((e) => ReelModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-    );
+    )..links = json['links'] == null
+        ? null
+        : LinksModel.fromJson(json['links'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$ReelsModelToJson(ReelsModel instance) =>
     <String, dynamic>{
       'data': instance.reels,
+      'links': instance.links,
     };
 
 ReelModel _$ReelModelFromJson(Map<String, dynamic> json) => ReelModel(

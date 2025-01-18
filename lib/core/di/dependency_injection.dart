@@ -4,7 +4,6 @@ import 'package:spiders_task/core/networking/api_service.dart';
 import 'package:spiders_task/core/networking/dio_factory.dart';
 import 'package:spiders_task/features/home/data/repos/home_repo.dart';
 
-
 final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:spiders_task/core/theming/styles.dart';
 import 'package:spiders_task/features/home/logic/cubit/home_cubit.dart';
 import 'package:spiders_task/features/home/ui/widgets/action_buttons_column.dart';
 import 'package:spiders_task/features/home/ui/widgets/music_info_row.dart';
@@ -79,14 +80,23 @@ class HomeView extends StatelessWidget {
             },
             reelsSuccess: (reels, videoControllers, timestamp) {
               return PageView.builder(
+                physics: const BouncingScrollPhysics(),
                 controller: cubit.pageController,
                 scrollDirection: Axis.vertical,
                 itemCount: videoControllers.length,
                 onPageChanged: (index) {
                   // Reset video when changing pages
                   cubit.resetVideo(index);
+                  if (index == reels.length - 3) {
+                    log("pagination");
+                    cubit.loadMoreReels();
+                  }
                 },
                 itemBuilder: (context, index) {
+                  log(videoControllers.length.toString());
+                  log(index.toString());
+                  if (index == videoControllers.length - 1)
+                    cubit.loadMoreReels();
                   if (index == 0) cubit.resetVideo(index);
                   return Stack(
                     children: [
@@ -129,8 +139,19 @@ class HomeView extends StatelessWidget {
             },
             reelsFailure: (apiErrorModel) {
               return Center(
-                child:
-                    Text(apiErrorModel.message ?? "Oops! Something went wrong"),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(apiErrorModel.message ?? "Oops! Something went wrong",
+                        style: Styles.font12SemiBold),
+                    TextButton(
+                      onPressed: () {
+                        cubit.emitReelsStates();
+                      },
+                      child: const Text("Retry"),
+                    )
+                  ],
+                ),
               );
             },
           );

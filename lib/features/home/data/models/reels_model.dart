@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:spiders_task/features/home/data/models/links_model.dart';
 
 part 'reels_model.g.dart';
 
@@ -6,6 +7,8 @@ part 'reels_model.g.dart';
 class ReelsModel {
   @JsonKey(name: 'data')
   List<ReelModel>? reels;
+  @JsonKey(name: 'links')
+  LinksModel? links;
 
   ReelsModel({this.reels});
 
